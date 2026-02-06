@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  @apply bg-darkPrimaryBg text-white font-sans antialiased;
+}
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(165, 216, 255, 0.7),
+    rgba(177, 151, 252, 0.7),
+    rgba(59, 130, 246, 0.9)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glass-card {
+  @apply bg-white/5 border border-white/10 backdrop-blur-xl;
+}
+
+.stat-card {
+  @apply relative overflow-hidden rounded-2xl bg-gradient-to-b from-white/5 to-white/[0.02] border border-white/10;
+}
+
+.logo-marquee-track {
+  display: flex;
+  width: max-content;
+}
+
