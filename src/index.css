@@ -28,11 +28,16 @@ body {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.1),
-      rgba(255, 255, 255, 0.05) 50%,
-      rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.1)
+  );
   -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -56,6 +61,7 @@ body {
 }
 
 .mask-edge-fade {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
   mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
 
@@ -67,7 +73,8 @@ body {
 
 /* Micro-Interactions */
 .lift-on-hover {
-  @apply transition-transform duration-300 ease-out-expo;
+  @apply transition-transform duration-300;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .lift-on-hover:hover {
@@ -75,7 +82,25 @@ body {
 }
 
 .link-underline {
-  @apply relative inline-block after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-current after:transition-transform after:duration-300 after:ease-out-expo hover:after:origin-left hover:after:scale-x-100;
+  @apply relative inline-block;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 :focus-visible {
@@ -87,15 +112,12 @@ body {
     transform: translateX(-100%) skewX(-20deg);
     opacity: 0;
   }
-
   20% {
     opacity: 1;
   }
-
   80% {
     opacity: 1;
   }
-
   100% {
     transform: translateX(200%) skewX(-20deg);
     opacity: 0;
