@@ -1,3 +1,6 @@
+import { useState, useEffect } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import clsx from 'clsx';
 import { Hero } from './components/Hero';
 import { FlowSection } from './components/FlowSection';
 import { StatsSection } from './components/StatsSection';
@@ -7,8 +10,54 @@ import { FAQSection } from './components/FAQ';
 import { FinalCTA } from './components/FinalCTA';
 
 function App() {
+  const [activeSection, setActiveSection] = useState<string>('');
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: 0
+    };
+
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+    const sections = ['metrics', 'flows-heading', 'support'];
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const navLinks = [
+    { name: 'Metrics', href: '#metrics', id: 'metrics' },
+    { name: 'Process', href: '#flows-heading', id: 'flows-heading' },
+    { name: 'Support', href: '#support', id: 'support' },
+  ];
+
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-lightPrimary/20 selection:text-white">
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 z-[100] h-[2px] bg-gradient-to-r from-accent1 via-accent3 to-lightPrimary origin-left shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+        style={{ scaleX }}
+      />
+
       <a
         href="#hero-heading"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-xs focus:text-black focus:outline-none focus:ring-2 focus:ring-lightPrimary"
@@ -30,16 +79,23 @@ function App() {
             </div>
           </div>
 
-          <nav aria-label="Primary" className="hidden items-center gap-10 text-[10px] font-bold uppercase tracking-widest text-white/60 sm:flex">
-            <a href="#impact-heading" className="link-underline transition-colors hover:text-white">
-              Metrics
-            </a>
-            <a href="#flows-heading" className="link-underline transition-colors hover:text-white">
-              Process
-            </a>
-            <a href="#faq-heading" className="link-underline transition-colors hover:text-white">
-              Support
-            </a>
+          <nav aria-label="Primary" className="hidden items-center gap-10 text-sm font-bold uppercase tracking-widest sm:flex">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className={clsx(
+                  'link-underline transition-all duration-300',
+                  activeSection === link.id ? 'text-white' : 'text-white/60 hover:text-white'
+                )}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                {link.name}
+              </a>
+            ))}
             <div className="h-4 w-px bg-white/10" />
             <button className="text-white/90 transition-opacity hover:opacity-80">
               Sign In

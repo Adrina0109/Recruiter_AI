@@ -39,6 +39,7 @@ const stats = [
 export function StatsSection() {
   return (
     <section
+      id="metrics"
       aria-labelledby="impact-heading"
       className="relative border-b border-white/5 bg-[#050505] py-24 sm:py-32"
     >

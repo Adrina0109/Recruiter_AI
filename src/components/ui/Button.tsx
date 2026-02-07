@@ -1,5 +1,6 @@
+import { useRef } from 'react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import clsx from 'clsx';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost';
@@ -31,12 +32,44 @@ export function Button({
   asChild,
   ...props
 }: ButtonProps) {
-  // Destructure out the motion props we are using or that might conflict
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const springConfig = { stiffness: 150, damping: 15 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!buttonRef.current) return;
+    const rect = buttonRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distanceX = e.clientX - centerX;
+    const distanceY = e.clientY - centerY;
+
+    // Max movement of 8 pixels
+    x.set(distanceX * 0.15);
+    y.set(distanceY * 0.15);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   const { whileHover, whileTap, ...buttonProps } = props as any;
 
   return (
     <motion.button
-      whileHover={{ scale: 1.02, y: -1 }}
+      ref={buttonRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        x: springX,
+        y: springY,
+      }}
+      whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       className={clsx(baseClasses, variantClasses[variant], className)}
       {...buttonProps}

@@ -71,6 +71,7 @@ const stepVariants = {
 export function FlowSection() {
   return (
     <section
+      id="flows-heading"
       aria-labelledby="flows-heading"
       className="relative overflow-hidden border-b border-white/5 bg-[#050505] py-24 sm:py-32"
     >
@@ -124,18 +125,18 @@ export function FlowSection() {
                       <motion.div
                         key={step}
                         variants={stepVariants}
-                        className="relative flex items-center gap-4"
+                        className="group/step relative flex items-center gap-4"
                       >
                         <div className="relative z-10 flex h-6 w-6 items-center justify-center">
                           {isDecision ? (
-                            <div className="h-4 w-4 rotate-45 border border-accent3 bg-accent3/20 shadow-[0_0_10px_rgba(177,151,252,0.3)]" />
+                            <div className="h-4 w-4 rotate-45 border border-accent3 bg-accent3/20 shadow-[0_0_10px_rgba(177,151,252,0.3)] transition-all duration-300 group-hover/step:scale-110 group-hover/step:bg-accent3/30" />
                           ) : (
-                            <div className="h-3 w-3 rounded-full border border-lightPrimary bg-lightPrimary/20 shadow-[0_0_10px_rgba(59,130,246,0.3)]" />
+                            <div className="h-3 w-3 rounded-full border border-lightPrimary bg-lightPrimary/20 shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all duration-300 group-hover/step:scale-110 group-hover/step:bg-lightPrimary/30" />
                           )}
                         </div>
 
-                        <div className="flex-1 rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3 transition-colors duration-300 group-hover/step:border-white/10 group-hover/step:bg-white/[0.05]">
-                          <p className={`text-xs font-medium ${isDecision ? 'text-accent3' : 'text-white/75'}`}>
+                        <div className="flex-1 rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3 transition-all duration-500 group-hover/step:border-white/10 group-hover/step:bg-white/[0.06] group-hover/step:-translate-y-0.5 group-hover/step:shadow-soft-glow">
+                          <p className={`text-xs font-medium transition-colors duration-300 ${isDecision ? 'text-accent3' : 'text-white/75 group-hover/step:text-white'}`}>
                             {step}
                           </p>
                         </div>

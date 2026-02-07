@@ -35,6 +35,7 @@ export function FAQSection() {
 
   return (
     <section
+      id="support"
       aria-labelledby="faq-heading"
       className="relative border-b border-white/5 bg-[#050505] py-24 sm:py-32"
     >

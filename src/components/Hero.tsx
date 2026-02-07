@@ -81,8 +81,30 @@ export function Hero() {
         style={{ y: backgroundY }}
         className="pointer-events-none absolute inset-0 z-0"
       >
-        <div className="absolute left-1/4 top-0 h-[500px] w-[500px] rounded-full bg-lightPrimary/10 blur-[120px]" />
-        <div className="absolute right-1/4 top-0 h-[400px] w-[400px] rounded-full bg-accent3/10 blur-[120px]" />
+        <motion.div
+          animate={{
+            x: [0, 60, 0],
+            y: [0, 40, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          className="absolute left-1/4 top-0 h-[500px] w-[500px] rounded-full bg-lightPrimary/10 blur-[120px]"
+        />
+        <motion.div
+          animate={{
+            x: [0, -40, 0],
+            y: [0, 80, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          className="absolute right-1/4 top-0 h-[400px] w-[400px] rounded-full bg-accent3/10 blur-[120px]"
+        />
       </motion.div>
 
       <div className="noise-overlay absolute inset-0 z-0" />
