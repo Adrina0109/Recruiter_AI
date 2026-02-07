@@ -8,8 +8,14 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  @apply bg-darkPrimaryBg text-white font-sans antialiased;
+  @apply bg-[#050505] text-white font-sans antialiased selection:bg-lightPrimary/30;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 .gradient-border {
@@ -22,12 +28,10 @@ body {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(165, 216, 255, 0.7),
-    rgba(177, 151, 252, 0.7),
-    rgba(59, 130, 246, 0.9)
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.1));
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -37,15 +41,67 @@ body {
 }
 
 .glass-card {
-  @apply bg-white/5 border border-white/10 backdrop-blur-xl;
+  @apply bg-white/[0.03] border border-white/10 backdrop-blur-2xl;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .stat-card {
-  @apply relative overflow-hidden rounded-2xl bg-gradient-to-b from-white/5 to-white/[0.02] border border-white/10;
+  @apply relative overflow-hidden rounded-3xl bg-gradient-to-b from-white/[0.05] to-transparent border border-white/5;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.logo-marquee-track {
-  display: flex;
-  width: max-content;
+.stat-card:hover {
+  @apply border-white/20 bg-white/[0.08];
+  transform: translateY(-4px);
 }
 
+.mask-edge-fade {
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  pointer-events: none;
+}
+
+/* Micro-Interactions */
+.lift-on-hover {
+  @apply transition-transform duration-300 ease-out-expo;
+}
+
+.lift-on-hover:hover {
+  @apply -translate-y-1;
+}
+
+.link-underline {
+  @apply relative inline-block after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-current after:transition-transform after:duration-300 after:ease-out-expo hover:after:origin-left hover:after:scale-x-100;
+}
+
+:focus-visible {
+  @apply outline-none ring-2 ring-lightPrimary ring-offset-2 ring-offset-black transition-all duration-200;
+}
+
+@keyframes sweep {
+  0% {
+    transform: translateX(-100%) skewX(-20deg);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(200%) skewX(-20deg);
+    opacity: 0;
+  }
+}
+
+.animate-sweep {
+  animation: sweep 3s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}

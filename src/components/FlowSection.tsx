@@ -1,103 +1,158 @@
 import { motion } from 'framer-motion';
 import { SectionHeader } from './ui/SectionHeader';
-import { GlassCard } from './ui/GlassCard';
 
 const flows = [
   {
     title: 'Automated Screening',
-    subtitle: 'Let AI handle the initial triage so you never miss great talent.',
+    subtitle: 'AI-driven triage for every incoming applicant.',
     steps: [
-      'Application',
-      'AI Resume Screening',
-      'Send Questions',
-      'Score > 75%?',
-      'YES → Schedule Interview',
-      'NO → Thank you email + Talent Pool',
+      'Application Submitted',
+      'AI Resume Analysis',
+      'Qualification Check?',
+      'Schedule Interview',
     ],
   },
   {
-    title: 'Multi Stage Interview',
-    subtitle: 'Move candidates through structured, bias-aware interview stages.',
+    title: 'Interview Orchestration',
+    subtitle: 'Seamless movement between stage-gates.',
     steps: [
-      'AI Interview',
-      'Score > 80%?',
-      'YES → Manager Interview → Hire/Reject',
-      'NO → Auto rejection with feedback',
+      'AI Initial Interview',
+      'Technical Evaluation?',
+      'Manager Review',
+      'Generate Offer',
     ],
   },
   {
-    title: 'Passive Candidate System',
-    subtitle: 'Build a living talent pool that activates itself when roles open.',
+    title: 'Talent Nurturing',
+    subtitle: 'Re-engage top talent for future openings.',
     steps: [
-      'Rejected but good → Add to Future Talent',
-      'Wait',
-      'New Role?',
-      'YES → Re-engage → Fast track interview',
-      'NO → Stay in pool',
+      'Archive & Label',
+      'Passive Monitoring',
+      'Role Match?',
+      'Direct Fast-Track',
     ],
   },
 ];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+const stepVariants = {
+  hidden: { opacity: 0, x: -10 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
 
 export function FlowSection() {
   return (
     <section
       aria-labelledby="flows-heading"
-      className="relative border-b border-white/5 bg-gradient-to-b from-black via-[#020617] to-black py-20 sm:py-24"
+      className="relative overflow-hidden border-b border-white/5 bg-[#050505] py-24 sm:py-32"
     >
-      <div className="pointer-events-none absolute inset-0 bg-section-gradient/40 opacity-70" />
-      <div className="relative mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
+
+      <div className="relative mx-auto flex max-w-6xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
           <SectionHeader
-            eyebrow="HOW IT WORKS"
-            title="AI Recruiting Software That Works Like Your Own HR Team"
-            description="Build custom hiring workflows in minutes. No coding required. Drag, drop, and let RecruiterAI orchestrate every step from application to offer."
+            eyebrow="AUTOMATION ENGINE"
+            title="Design Your Perfect Hiring Flow"
+            description="Build custom hiring pipelines that run themselves. From first click to first day, RecruiterAI automates the logistics so you can focus on the human connection."
             align="left"
           />
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          className="grid gap-8 lg:grid-cols-3"
+        >
           {flows.map((flow, flowIndex) => (
-            <GlassCard key={flow.title} delay={0.1 + flowIndex * 0.1} className="bg-black/60">
-              <div className="mb-4 flex items-start justify-between gap-3">
-                <div>
-                  <h3 className="text-sm font-semibold text-white">{flow.title}</h3>
-                  <p className="mt-1 text-[11px] text-darkSecondary">{flow.subtitle}</p>
-                </div>
-                <span className="rounded-full bg-lightPrimary/15 px-2 py-1 text-[10px] text-accent1 ring-1 ring-lightPrimary/40">
-                  Automation
-                </span>
-              </div>
-              <div className="space-y-3 text-[11px]">
-                {flow.steps.map((step, index) => (
-                  <motion.div
-                    key={step}
-                    initial={{ opacity: 0, x: index % 2 === 0 ? -10 : 10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: '-60px' }}
-                    transition={{ delay: 0.15 + index * 0.05, duration: 0.4 }}
-                    className="relative flex items-center gap-2"
-                  >
-                    <div className="relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10">
-                      <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-accent1 via-accent3 to-lightPrimary" />
-                    </div>
-                    <div className="flex-1 rounded-xl bg-white/3 px-3 py-2 ring-1 ring-white/10">
-                      <p className="text-[11px] text-darkSecondary/90">{step}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+            <motion.div key={flow.title} variants={cardVariants} className="group relative">
+              <div className="absolute -inset-px rounded-[2rem] bg-gradient-to-b from-white/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-              <motion.div
-                aria-hidden="true"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="pointer-events-none absolute inset-x-0 -bottom-6 h-10 bg-gradient-to-b from-accent3/20 via-accent3/0 to-transparent blur-2xl"
-              />
-            </GlassCard>
+              <div className="relative h-full rounded-[2rem] border border-white/5 bg-white/[0.04] p-8 backdrop-blur-sm transition-transform duration-500 group-hover:-translate-y-1">
+                <div className="mb-8 flex items-start justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold tracking-tight text-white">{flow.title}</h3>
+                    <p className="mt-2 text-sm text-darkSecondary">{flow.subtitle}</p>
+                  </div>
+                </div>
+
+                <div className="relative space-y-6">
+                  {/* Vertical Connector Line */}
+                  <div className="absolute left-[11px] top-6 h-[calc(100%-24px)] w-[1px] bg-white/5">
+                    <motion.div
+                      initial={{ height: 0 }}
+                      whileInView={{ height: '100%' }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.5, delay: 0.5 + flowIndex * 0.2, ease: "easeInOut" }}
+                      className="w-full bg-gradient-to-b from-lightPrimary via-accent3 to-transparent"
+                    />
+                  </div>
+
+                  {flow.steps.map((step, stepIndex) => {
+                    const isDecision = step.endsWith('?');
+                    return (
+                      <motion.div
+                        key={step}
+                        variants={stepVariants}
+                        className="relative flex items-center gap-4"
+                      >
+                        <div className="relative z-10 flex h-6 w-6 items-center justify-center">
+                          {isDecision ? (
+                            <div className="h-4 w-4 rotate-45 border border-accent3 bg-accent3/20 shadow-[0_0_10px_rgba(177,151,252,0.3)]" />
+                          ) : (
+                            <div className="h-3 w-3 rounded-full border border-lightPrimary bg-lightPrimary/20 shadow-[0_0_10px_rgba(59,130,246,0.3)]" />
+                          )}
+                        </div>
+
+                        <div className="flex-1 rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3 transition-colors duration-300 group-hover/step:border-white/10 group-hover/step:bg-white/[0.05]">
+                          <p className={`text-xs font-medium ${isDecision ? 'text-accent3' : 'text-white/75'}`}>
+                            {step}
+                          </p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-10">
+                  <button className="text-[11px] font-semibold uppercase tracking-widest text-lightPrimary opacity-0 transition-all duration-300 group-hover:opacity-100">
+                    Customize Template →
+                  </button>
+                </div>
+              </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

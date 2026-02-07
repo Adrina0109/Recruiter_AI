@@ -5,43 +5,66 @@ export function FinalCTA() {
   return (
     <section
       aria-labelledby="final-cta-heading"
-      className="relative border-b border-white/5 bg-black py-16 sm:py-20"
+      className="relative border-b border-white/5 bg-[#050505] py-24 sm:py-32 overflow-hidden"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(177,151,252,0.28),transparent_60%)]" />
-      <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      {/* Drifting Background Gradient */}
+      <motion.div
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.15, 0.25, 0.15],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+        className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_-20%,_rgba(177,151,252,0.8),transparent_70%)] blur-[80px]"
+      />
+
+      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-          className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-accent3/15 via-black to-accent1/10 p-6 shadow-soft sm:p-10"
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.02] p-12 text-center backdrop-blur-md sm:p-20 group"
         >
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="max-w-xl">
-              <h2
-                id="final-cta-heading"
-                className="text-2xl font-semibold tracking-tight text-white sm:text-3xl"
+          {/* Internal Glow Fallback */}
+          <div className="absolute inset-0 z-0 bg-gradient-to-b from-white/[0.05] to-transparent opacity-50" />
+
+          <div className="relative z-10 mx-auto max-w-2xl">
+            <h2
+              id="final-cta-heading"
+              className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
+            >
+              Ready to automate your <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-lightPrimary via-accent3 to-accent1">
+                hiring intelligence?
+              </span>
+            </h2>
+            <p className="mt-8 text-lg leading-relaxed text-darkSecondary/80">
+              Join high-growth teams using RecruiterAI to build their
+              <br className="hidden sm:block" />
+              engineering and product organizations with precision.
+            </p>
+            <div className="mt-12 flex flex-col items-center justify-center gap-6 sm:flex-row">
+              <Button className="h-14 px-10 text-base" showSweep>
+                Start Free Trial
+              </Button>
+              <Button
+                variant="secondary"
+                className="h-14 px-10 text-base"
               >
-                Ready to Hire Better, Faster?
-              </h2>
-              <p className="mt-2 text-sm text-darkSecondary">
-                Join 500+ companies hiring smarter with AI. Give your team the leverage of an entire
-                recruiting function without adding headcount.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:min-w-[230px]">
-              <Button type="button">Start Free Trial</Button>
-              <Button type="button" variant="secondary">
                 Schedule Demo
               </Button>
-              <p className="text-[10px] text-darkSecondary">
-                Get a tailored playbook for your next 3 key hires.
-              </p>
             </div>
+
+            <p className="mt-8 text-[11px] font-bold uppercase tracking-widest text-darkSecondary/40">
+              No credit card required • 14-day free assessment • 24/7 Priority Support
+            </p>
           </div>
         </motion.div>
       </div>
     </section>
   );
 }
-
